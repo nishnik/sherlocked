@@ -29,14 +29,14 @@ if cuda:
 
 kwargs = {'num_workers': 1, 'pin_memory': True} if cuda else {}
 train_loader = torch.utils.data.DataLoader(
-    datasets.MNIST('~/data', train=True, download=True,
+    datasets.MNIST('../data', train=True, download=True,
                    transform=transforms.Compose([
                        transforms.ToTensor(),
                        transforms.Normalize((0.1307,), (0.3081,))
                    ])),
     batch_size=batch_size, shuffle=True, **kwargs)
 test_loader = torch.utils.data.DataLoader(
-    datasets.MNIST('~/data', train=False, transform=transforms.Compose([
+    datasets.MNIST('../data', train=False, transform=transforms.Compose([
                        transforms.ToTensor(),
                        transforms.Normalize((0.1307,), (0.3081,))
                    ])),
@@ -76,7 +76,7 @@ class MLPNet(nn.Module):
 
 class MLPNetModified(nn.Module):
     def __init__(self, f1, f2, f3):
-        super(MLPNet, self).__init__()
+        super(MLPNetModified, self).__init__()
         self.f1 = f1
         self.f2 = f2
         self.f3 = f3
