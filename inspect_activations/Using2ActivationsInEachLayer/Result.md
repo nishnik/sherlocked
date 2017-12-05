@@ -1,5 +1,5 @@
 
-|Layer 1-Part 1| Layer 1-Part 2| Layer 2-Part 1| Layer 2-Part 2| Layer 3-Part 1| Layer 3-Part 2| Loss Iter 1| Loss Iter 2	| Loss Iter 3	|Loss Iter 4	|Loss Iter 5	|Loss Iter 6 | Loss Iter 7	|Loss Iter 8	|Loss Iter 9	|Loss Iter 10| Average Loss	| Accuracy|
+|Layer 1-Part 1| Layer 1-Part 2| Layer 2-Part 1| Layer 2-Part 2| Layer 3-Part 1| Layer 3-Part 2| Loss after Iter 1| Loss after Iter 2	| Loss after Iter 3	|Loss after Iter 4	|Loss after Iter 5	|Loss after Iter 6 | Loss after Iter 7	|Loss after Iter 8	|Loss after Iter 9	|Loss after Iter 10| Average Loss	| Accuracy|
 |---------|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:| -----:| ------:|
 | relu	| tanh	| relu	| tanh	| relu	| tanh	| 0.914719521999	| 0.53836864233	| 0.773382902145 |  0.662172496319		|  0.661959826946	|  0.766116321087		| 0.5430970788	|  0.562383770943	| 0.592531621456	| 0.688040733337 | 0.6508	| 97.04%|
 | relu	| sigmoid	| relu	| sigmoid	| relu	| sigmoid	| 1.24132835865	| 0.787594497204		|  0.846741020679	|  0.704000532627		|  0.76868981123	|  0.777830183506		|  0.800184190273	|  0.804872810841		|  0.756816327572		| 0.930712044239	| 0.7760	| 96.11%|
