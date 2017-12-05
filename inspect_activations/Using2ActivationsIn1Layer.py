@@ -197,9 +197,9 @@ test_accuracy_last.sort(key=lambda x: x[1])
 for a in test_accuracy_last:
     print(a)
     
-#['tanh_sigmoid_', 95.33]
-#['relu_sigmoid_', 96.11]
-#['sigmoid_selu_', 96.56]
-#['relu_tanh_', 97.04]
-#['tanh_selu_', 97.33]
-#['relu_selu_', 98.02]
+#['tanh-sigmoid_tanh-sigmoid', 95.33]
+#['relu-sigmoid_relu-sigmoid', 96.11]
+#['sigmoid-selu_sigmoid-selu', 96.56]
+#['relu-tanh_relu-tanh', 97.04]
+#['tanh-selu_tanh-selu', 97.33]
+#['relu-selu_relu-selu', 98.02]
