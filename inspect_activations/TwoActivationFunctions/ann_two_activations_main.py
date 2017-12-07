@@ -160,7 +160,7 @@ for count in range(1,2):
     a_list=[F.relu, F.tanh, F.sigmoid, F.tanh]
     c_list=[F.relu, F.tanh, F.sigmoid, F.tanh]
     e_list=[F.relu, F.tanh, F.sigmoid, F.tanh]
-    for a in [F.sigmoid]:
+    for a in a_list:
         if(a==F.relu):
             b_list=[F.relu,F.tanh, F.sigmoid, F.selu]
         elif(a==F.tanh):
@@ -169,8 +169,8 @@ for count in range(1,2):
             b_list=[F.sigmoid,F.selu]
         else:
             b_list=[F.selu]
-        for b in [F.sigmoid]:
-            for c in [F.sigmoid]:
+        for b in b_list:
+            for c in c_list:
                 if(c==F.relu):
                     d_list=[F.relu,F.tanh, F.sigmoid, F.selu]
                 elif(c==F.tanh):
@@ -179,7 +179,7 @@ for count in range(1,2):
                     d_list=[F.sigmoid,F.selu]
                 else:
                     d_list=[F.selu]
-                for d in [F.sigmoid]:
+                for d in d_list:
                     for e in e_list:
                         if(e==F.relu):
                             f_list=[F.relu,F.tanh, F.sigmoid, F.selu]
@@ -196,8 +196,3 @@ for count in range(1,2):
                             File=open(fileName,'a+')
                             solve(a, b, c, d, e, f)
                             File.close()
-
-# File=open(fileName,'a+')
-# solve(F.sigmoid, F.sigmoid, F.sigmoid, F.sigmoid,F.selu, F.selu)
-# solve(F.sigmoid, F.sigmoid, F.sigmoid, F.sigmoid,F.selu, F.selu)
-# File.close()
