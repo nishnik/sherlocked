@@ -171,14 +171,7 @@ for count in range(0,10):
                 x+=1
                 print(x)
                 print(a, b, c)
-                solve(F.selu, F.selu,F.selu,0)
-                solve(F.selu, F.selu,F.sigmoid,0)
-                solve(F.selu, F.selu,F.selu,0)
-                solve(F.selu, F.selu,F.sigmoid,0)
-                solve(F.selu, F.selu,F.selu,0)
-                solve(F.selu, F.selu,F.sigmoid,0)
-                solve(F.selu, F.selu,F.selu,0)
-                solve(F.selu, F.selu,F.sigmoid,0)
+                solve(a, b, c, count)
 
 File=open(FileName,'a+')
 dic1={0:"relu",1:"tanh",2:"sigmoid",3:"selu"}
