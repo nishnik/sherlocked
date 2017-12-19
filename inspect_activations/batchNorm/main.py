@@ -123,7 +123,7 @@ def solve(f1, f2, f3, count):
             loss = F.nll_loss(output, target)
             loss.backward()
             optimizer.step()
-            loss_to_print = loss.data[0]
+            loss_to_print += loss.data[0]
             if batch_idx % log_interval == 0:
                 train_loss.append(loss.data[0])
         print (epoch, loss_to_print)

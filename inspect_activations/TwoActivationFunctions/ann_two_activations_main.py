@@ -120,7 +120,7 @@ def solve(f11,f12, f21,f22, f31,f32):
             loss = F.nll_loss(output, target)
             loss.backward()
             optimizer.step()
-            loss_to_print = loss.data[0]
+            loss_to_print += loss.data[0]
             if batch_idx % args.logInterval == 0:
                 train_loss.append(loss.data[0])
                 # print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
