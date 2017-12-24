@@ -126,38 +126,38 @@ def solve(f1, f2, f3 ,lr):
         TEST_LOSS  = test(epoch)
     return TRAIN_LOSS,TEST_LOSS
 
-train_plots_sig = [[]]*20
-test_plots_sig = [[]]*20
+train_plots_sig = [[]]*10
+test_plots_sig = [[]]*10
 fig = plt.figure()
 
 for i in range(1, 21,2):
-    train_plots_sig[i-1],test_plots_sig[i-1] = solve(F.sigmoid, F.sigmoid, F.sigmoid, 0.05 *i)
-    plt.plot(train_plots_sig[i-1],label = "lr_"+str(0.05*i))
+    train_plots_sig[int((i-1)/2)],test_plots_sig[int((i-1)/2)] = solve(F.sigmoid, F.sigmoid, F.sigmoid, 0.05 *i)
+    plt.plot(train_plots_sig[int((i-1)/2)],label = "lr_"+str(0.05*i))
 plt.legend(loc='lower right')
 plt.savefig("training_convergence_sig_sig_sig.png")
 
 fig = plt.figure()
 
 for i in range(1, 21, 2):
-    plt.plot(test_plots_sig[i-1],label = "lr_"+str(0.05*i))
+    plt.plot(test_plots_sig[int((i-1)/2)],label = "lr_"+str(0.05*i))
 plt.legend(loc='lower right')
 plt.savefig("test_convergence_sig_sig_sig.png")
 
 
 
-train_plots_relu = [[]]*20
-test_plots_relu  = [[]]*20
+train_plots_relu = [[]]*10
+test_plots_relu  = [[]]*10
 fig = plt.figure()
 
 for i in range(1, 21,2):
-    train_plots_relu[i-1],test_plots_relu[i-1] = solve(F.relu, F.relu, F.relu, 0.05 *i)
-    plt.plot(train_plots_relu[i-1],label = "lr_"+str(0.05*i))
+    train_plots_relu[int((i-1)/2)],test_plots_relu[int((i-1)/2)] = solve(F.relu, F.relu, F.relu, 0.05 *i)
+    plt.plot(train_plots_relu[int((i-1)/2)],label = "lr_"+str(0.05*i))
 plt.legend(loc='lower right')
 plt.savefig("training_convergence_relu_relu_relu.png")
 
 fig = plt.figure()
 
 for i in range(1, 21, 2):
-    plt.plot(test_plots_relu[i-1],label = "lr_"+str(0.05*i))
+    plt.plot(test_plots_relu[int((i-1)/2)],label = "lr_"+str(0.05*i))
 plt.legend(loc='lower right')
 plt.savefig("test_convergence_relu_relu_relu.png")
