@@ -1,5 +1,3 @@
-# Code influenced by: https://github.com/pytorch/examples/blob/master/mnist/main.py
-
 from __future__ import print_function
 import argparse
 import torch
@@ -14,7 +12,6 @@ import matplotlib.pyplot as plt
 batch_size = 32
 test_batch_size = 1000
 epochs = 10
-lr = 0.01
 momentum = 0.5
 no_cuda = False
 seed = 1
@@ -42,38 +39,6 @@ test_loader = torch.utils.data.DataLoader(
                    ])),
     batch_size=test_batch_size, shuffle=True, **kwargs)
 
-# class Net(nn.Module):
-#     def __init__(self):
-#         super(Net, self).__init__()
-#         self.conv1 = nn.Conv2d(1, 10, kernel_size=5)
-#         self.conv2 = nn.Conv2d(10, 20, kernel_size=5)
-#         self.fc1 = nn.Linear(320, 50)
-#         self.fc2 = nn.Linear(50, 10)
-#     def forward(self, x):
-#         x = F.relu(F.max_pool2d(self.conv1(x), 2))
-#         x = F.relu(F.max_pool2d(self.conv2(x), 2))
-#         x = x.view(-1, 320)
-#         x = F.relu(self.fc1(x))
-#         x = self.fc2(x)
-#         return F.log_softmax(x)
-
-class MLPNet(nn.Module):
-    def __init__(self):
-        super(MLPNet, self).__init__()
-        self.fc1 = nn.Linear(28*28, 500)
-        self.fc2 = nn.Linear(500, 256)
-        self.fc3 = nn.Linear(256, 10)
-        # self.ceriation = nn.CrossEntropyLoss()
-    def forward(self, x):
-        x = x.view(-1, 28*28)
-        x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        x = F.relu(self.fc3(x))
-        # loss = self.ceriation(x, target)
-        return F.log_softmax(x)
-    def name(self):
-        return 'mlpnet'
-
 class MLPNetModified(nn.Module):
     def __init__(self, f1, f2, f3):
         super(MLPNetModified, self).__init__()
@@ -83,7 +48,6 @@ class MLPNetModified(nn.Module):
         self.fc1 = nn.Linear(28*28, 500)
         self.fc2 = nn.Linear(500, 256)
         self.fc3 = nn.Linear(256, 10)
-        # self.ceriation = nn.CrossEntropyLoss()
     def forward(self, x):
         x = x.view(-1, 28*28)
         x = self.fc1(x)
@@ -107,16 +71,11 @@ class MLPNetModified(nn.Module):
         first_part = self.f3(first_part)
         second_part = self.f3(second_part)
         x = torch.cat((first_part, second_part), 1)
-        # loss = self.ceriation(x, target)
         return F.log_softmax(x)
     def name(self):
         return 'mlpnet'
 
-plots_test_loss = []
-plots_train_loss = []
-plots_test_accuracy = []
-
-def solve(f1, f2, f3):
+def solve(f1, f2, f3 ,lr):
     print (str(f1).split()[1], str(f2).split()[1], str(f3).split()[1])
     model = MLPNetModified(f1, f2, f3)
     optimizer = optim.SGD(model.parameters(), lr=lr, momentum=momentum)
@@ -126,7 +85,7 @@ def solve(f1, f2, f3):
     def train(epoch):
         model.train()
         loss_to_print = 0
-        for batch_idx, (data, target) in enumerate(train_loader):
+        for data, target in train_loader:
             if cuda:
                 data, target = data.cuda(), target.cuda()
             data, target = Variable(data), Variable(target)
@@ -136,12 +95,12 @@ def solve(f1, f2, f3):
             loss.backward()
             optimizer.step()
             loss_to_print += loss.data[0]
-            if batch_idx % log_interval == 0:
-                train_loss.append(loss.data[0])
                 # print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
                 #     epoch, batch_idx * len(data), len(train_loader.dataset),
                 #     100. * batch_idx / len(train_loader), loss.data[0]))
+        train_loss.append(loss_to_print)
         print (epoch, loss_to_print)
+        return train_loss
     def test(epoch):
         model.eval()
         test_loss = 0
@@ -161,71 +120,44 @@ def solve(f1, f2, f3):
                 100. * correct / len(test_loader.dataset)))
         test_losses.append(test_loss)
         test_accuracy.append(100. * correct / len(test_loader.dataset))
+        return test_losses
     for epoch in range(1, epochs + 1):
-        train(epoch)
-        test(epoch)
-    # fig = plt.figure()
-    # plt.plot(train_loss)
-    plots_train_loss.append([str(f1).split()[1]+'_'+str(f2).split()[1]+'_'+str(f3).split()[1]+'_'+'test_loss' + '.png', train_loss])
-    # fig.savefig(str(f1).split()[1]+'_'+str(f2).split()[1]+'_'+str(f3).split()[1]+'_'+'train_loss' + '.png', dpi=fig.dpi)
-    # fig = plt.figure()
-    # plt.plot(test_losses)
-    plots_test_loss.append([str(f1).split()[1]+'_'+str(f2).split()[1]+'_'+str(f3).split()[1]+'_'+'test_loss' + '.png', test_losses])
-    # fig.savefig(str(f1).split()[1]+'_'+str(f2).split()[1]+'_'+str(f3).split()[1]+'_'+'test_loss' + '.png', dpi=fig.dpi)
-    # fig = plt.figure()
-    # plt.plot(test_accuracy)
-    plots_test_accuracy.append([str(f1).split()[1]+'_'+str(f2).split()[1]+'_'+str(f3).split()[1]+'_'+'test_loss' + '.png', test_accuracy])
-    # fig.savefig(str(f1).split()[1]+'_'+str(f2).split()[1]+'_'+str(f3).split()[1]+'_'+'test_accu' + '.png', dpi=fig.dpi)
+        TRAIN_LOSS = train(epoch)
+        TEST_LOSS  = test(epoch)
+    return TRAIN_LOSS,TEST_LOSS
 
-# plt.show()
-for a in [F.relu, F.tanh, F.sigmoid, F.selu]:
-    for b in [F.relu, F.tanh, F.sigmoid, F.selu]:
-        for c in [F.relu, F.tanh, F.sigmoid, F.selu]:
-            solve(a, b, c)
+train_plots_sig = [[]]*10
+test_plots_sig = [[]]*10
+fig = plt.figure()
 
+for i in range(1, 21,2):
+    train_plots_sig[int((i-1)/2)],test_plots_sig[int((i-1)/2)] = solve(F.sigmoid, F.sigmoid, F.sigmoid, 0.05 *i)
+    plt.plot(train_plots_sig[int((i-1)/2)],label = "lr_"+str(0.05*i))
+plt.legend(loc='lower right')
+plt.savefig("training_convergence_sig_sig_sig.png")
 
 fig = plt.figure()
 
-for a in plots_test_accuracy:
-    if ('relu' in a[0]):
-        plt.plot(a[1], label='_'.join(a[0].split('_')[0:3]))
-
+for i in range(1, 21, 2):
+    plt.plot(test_plots_sig[int((i-1)/2)],label = "lr_"+str(0.05*i))
 plt.legend(loc='lower right')
-
-test_accuracy_last = []
-
-for a in plots_test_accuracy:
-    test_accuracy_last.append(['_'.join(a[0].split('_')[0:3]), a[1][len(a[1]) - 1]])
+plt.savefig("test_convergence_sig_sig_sig.png")
 
 
-test_accuracy_last.sort(key=lambda x: x[1])
-for a in test_accuracy_last:
-    print(a)
 
-# ['sigmoid_sigmoid_relu', 9.8]
-# ['relu_sigmoid_relu', 39.53]
-# ['sigmoid_relu_relu', 65.59]
-# ['tanh_sigmoid_relu', 68.57]
-# ['sigmoid_sigmoid_sigmoid', 71.75]
-# ['sigmoid_relu_sigmoid', 82.44]
-# ['sigmoid_tanh_relu', 83.15]
-# ['sigmoid_tanh_sigmoid', 83.34]
-# ['relu_sigmoid_sigmoid', 84.37]
-# ['tanh_sigmoid_sigmoid', 85.08]
-# ['sigmoid_sigmoid_tanh', 89.52]
-# ['tanh_tanh_sigmoid', 92.65]
-# ['sigmoid_tanh_tanh', 92.68]
-# ['sigmoid_relu_tanh', 92.75]
-# ['tanh_relu_sigmoid', 92.88]
-# ['tanh_sigmoid_tanh', 93.37]
-# ['relu_relu_sigmoid', 93.59]
-# ['relu_tanh_sigmoid', 93.72]
-# ['relu_sigmoid_tanh', 93.79]
-# ['tanh_tanh_tanh', 95.6]
-# ['tanh_relu_tanh', 95.83]
-# ['relu_relu_tanh', 96.68]
-# ['relu_tanh_tanh', 96.7]
-# ['tanh_tanh_relu', 97.19]
-# ['tanh_relu_relu', 97.35]
-# ['relu_tanh_relu', 97.6]
-# ['relu_relu_relu', 97.74]
+train_plots_relu = [[]]*10
+test_plots_relu  = [[]]*10
+fig = plt.figure()
+
+for i in range(1, 21,2):
+    train_plots_relu[int((i-1)/2)],test_plots_relu[int((i-1)/2)] = solve(F.relu, F.relu, F.relu, 0.05 *i)
+    plt.plot(train_plots_relu[int((i-1)/2)],label = "lr_"+str(0.05*i))
+plt.legend(loc='lower right')
+plt.savefig("training_convergence_relu_relu_relu.png")
+
+fig = plt.figure()
+
+for i in range(1, 21, 2):
+    plt.plot(test_plots_relu[int((i-1)/2)],label = "lr_"+str(0.05*i))
+plt.legend(loc='lower right')
+plt.savefig("test_convergence_relu_relu_relu.png")
