@@ -142,19 +142,20 @@ def solve(f1, f2, f3):
     # fig.savefig(str(f1).split()[1]+'_'+str(f2).split()[1]+'_'+str(f3).split()[1]+'_'+'test_accu' + '.png', dpi=fig.dpi)
 
 # plt.show()
-for a in [F.relu, F.tanh, F.sigmoid, F.selu]:
+for i in range(10):
+  for a in [F.relu, F.tanh, F.sigmoid, F.selu]:
     for b in [F.relu, F.tanh, F.sigmoid, F.selu]:
-        for c in [F.relu, F.tanh, F.sigmoid, F.selu]:
-            solve(a, b, c)
+      for c in [F.relu, F.tanh, F.sigmoid, F.selu]:
+        solve(a, b, c)
 
 
-fig = plt.figure()
+# fig = plt.figure()
 
-for a in plots_test_accuracy:
-    if ('relu' in a[0]):
-        plt.plot(a[1], label='_'.join(a[0].split('_')[0:3]))
+# for a in plots_test_accuracy:
+#     if ('relu' in a[0]):
+#         plt.plot(a[1], label='_'.join(a[0].split('_')[0:3]))
 
-plt.legend(loc='lower right')
+# plt.legend(loc='lower right')
 
 test_accuracy_last = []
 
